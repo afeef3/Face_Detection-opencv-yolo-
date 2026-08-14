@@ -139,22 +139,27 @@ Face_Detection-opencv-yolo/
 
 ### Original Image
 ![General Screenshot](outputs/screenshots/Screenshot.png)
+
 *Original application image showing the detection interface*
 
 ### Image Face Detection - First Detection
 ![Image Detection](outputs/screenshots/1st%20Detect%20Apply%20After.png)
+
 *First detection applied - face detected with confidence scores*
 
 ### Image Face Detection - Face Only
 ![Face Only Detection](outputs/screenshots/Applying%20only%20face%20detecting.png)
+
 *Face detection only mode - clean face bounding boxes*
 
 ### Combined Detection Results
 ![Combined Detection](outputs/screenshots/Combine%20all%20the%20Detecting.png)
+
 *All detection modes combined - face and object detection together*
 
 ### Webcam Real-time Detection (YOLOv8)
 ![Webcam Detection](outputs/screenshots/WebCam%20Output%20with%20Face%20%2B%20Object%20detecting.png)
+
 *Real-time face detection from webcam feed with bounding boxes and confidence scores*
 
 ## ⚙️ Configuration
@@ -232,13 +237,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [OpenCV](https://opencv.org/) - Computer vision library
 - Pre-trained face detection models from various sources
 - [derronqi/yolov8-face](https://github.com/derronqi/yolov8-face) - YOLOv8 face models
-
-## 📧 Contact
-
-**Author:** afeef3  
-**GitHub:** [@afeef3](https://github.com/afeef3)  
-**Repository:** [Face_Detection-opencv-yolo-](https://github.com/afeef3/Face_Detection-opencv-yolo-)
-
----
 
 ⭐ **Star this repo if you found it helpful!**
