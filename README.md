@@ -137,9 +137,9 @@ Face_Detection-opencv-yolo/
 
 ## 📊 Sample Outputs
 
-### Webcam Real-time Detection (YOLOv8)
-![Webcam Detection](outputs/screenshots/WebCam%20Output%20with%20Face%20%2B%20Object%20detecting.png)
-*Real-time face detection from webcam feed with bounding boxes and confidence scores*
+### Original Image
+![General Screenshot](outputs/screenshots/Screenshot.png)
+*Original application image showing the detection interface*
 
 ### Image Face Detection - First Detection
 ![Image Detection](outputs/screenshots/1st%20Detect%20Apply%20After.png)
@@ -153,9 +153,9 @@ Face_Detection-opencv-yolo/
 ![Combined Detection](outputs/screenshots/Combine%20all%20the%20Detecting.png)
 *All detection modes combined - face and object detection together*
 
-### General Screenshot
-![General Screenshot](outputs/screenshots/Screenshot.png)
-*General application screenshot showing the detection interface*
+### Webcam Real-time Detection (YOLOv8)
+![Webcam Detection](outputs/screenshots/WebCam%20Output%20with%20Face%20%2B%20Object%20detecting.png)
+*Real-time face detection from webcam feed with bounding boxes and confidence scores*
 
 ## ⚙️ Configuration
 
