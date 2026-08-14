@@ -15,81 +15,91 @@ This project implements face detection using YOLO (You Only Look Once) object de
 - **Bounding box visualization** with confidence scores
 - **Support for images, videos, and live webcam feed**
 - **Lightweight and fast** - optimized for real-time performance
+- **Two detection backends**: YOLOv8 (Ultralytics) and OpenCV DNN
 
 ## 🛠️ Tech Stack
 
 - **Python 3.8+**
 - **OpenCV (cv2)** - Computer vision library
-- **YOLO** - Object detection algorithm (YOLOv3/v4/v5/v8)
+- **YOLOv8** - Object detection algorithm (Ultralytics)
+- **OpenCV DNN** - Alternative face detector (no extra dependencies)
 - **NumPy** - Numerical computations
+- **PyTorch** - Deep learning framework (for YOLOv8)
 
 ## 📦 Installation
 
 ### Prerequisites
 
 ```bash
-pip install opencv-python numpy
+pip install -r requirements.txt
 ```
 
-### For YOLOv8 (Ultralytics)
+### Requirements
+
+```
+opencv-python>=4.8.0
+numpy>=1.24.0
+ultralytics>=8.0.0
+torch>=2.0.0
+torchvision>=0.15.0
+```
+
+### For YOLOv8 (Ultralytics) - Recommended
 ```bash
 pip install ultralytics
 ```
 
-### For YOLOv5
+### For OpenCV DNN only (lighter, no PyTorch)
 ```bash
-pip install torch torchvision
+pip install opencv-python numpy
 ```
 
 ## 🚀 Usage
 
-### 1. Real-time Webcam Detection
+### Quick Start - Webcam Detection (YOLOv8)
 
-```python
-import cv2
-
-# Load YOLO model
-net = cv2.dnn.readNet("yolov3-face.weights", "yolov3-face.cfg")
-# or for YOLOv8
-from ultralytics import YOLO
-model = YOLO("yolov8n-face.pt")
-
-# Start webcam
-cap = cv2.VideoCapture(0)
-
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        break
-    
-    # Perform detection
-    # ... detection code ...
-    
-    cv2.imshow("Face Detection", frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-cap.release()
-cv2.destroyAllWindows()
+```bash
+python src/detect_faces.py --mode webcam
 ```
 
-### 2. Image Detection
+### Quick Start - Webcam Detection (OpenCV DNN - No PyTorch)
 
-```python
-import cv2
-
-image = cv2.imread("test_image.jpg")
-# Perform face detection
-# Draw bounding boxes
-cv2.imwrite("output.jpg", image)
+```bash
+python src/detect_faces_opencv.py --mode webcam
 ```
 
-### 3. Video File Detection
+### Image Detection
 
-```python
-cap = cv2.VideoCapture("input_video.mp4")
-# Process each frame
-# Save output video
+```bash
+# YOLOv8
+python src/detect_faces.py --mode image --input data/test_images/sample.jpg --output outputs/detected_faces/sample_detected.jpg
+
+# OpenCV DNN
+python src/detect_faces_opencv.py --mode image --input data/test_images/sample.jpg --output outputs/detected_faces/sample_detected.jpg
+```
+
+### Video Detection
+
+```bash
+# YOLOv8
+python src/detect_faces.py --mode video --input data/test_videos/sample.mp4 --output outputs/processed_videos/sample_detected.mp4
+
+# OpenCV DNN
+python src/detect_faces_opencv.py --mode video --input data/test_videos/sample.mp4 --output outputs/processed_videos/sample_detected.mp4
+```
+
+### Command Line Options
+
+```bash
+python src/detect_faces.py --help
+
+Options:
+  --mode       Detection mode: webcam, image, video (default: webcam)
+  --input, -i  Input image/video path (required for image/video mode)
+  --output, -o Output path for results
+  --model, -m  YOLO model path (default: yolov8n-face.pt)
+  --conf, -c   Confidence threshold (default: 0.5)
+  --camera     Camera ID for webcam mode (default: 0)
 ```
 
 ## 📁 Project Structure
@@ -97,35 +107,37 @@ cap = cv2.VideoCapture("input_video.mp4")
 ```
 Face_Detection-opencv-yolo/
 ├── models/
-│   ├── yolov3-face.cfg
-│   ├── yolov3-face.weights
-│   └── yolov8n-face.pt
+│   ├── README.md                 # Model information
+│   └── (auto-downloaded models)
 ├── src/
-│   ├── detect_faces.py
-│   ├── detect_video.py
-│   └── detect_webcam.py
+│   ├── detect_faces.py           # YOLOv8 face detection
+│   └── detect_faces_opencv.py    # OpenCV DNN face detection
 ├── data/
-│   ├── test_images/
-│   └── test_videos/
+│   ├── README.md                 # Test data info
+│   ├── test_images/              # Test images
+│   └── test_videos/              # Test videos
 ├── outputs/
-│   ├── detected_faces/
-│   └── processed_videos/
-├── requirements.txt
-└── README.md
+│   ├── README.md                 # Output info
+│   ├── detected_faces/           # Processed images
+│   ├── processed_videos/         # Processed videos
+│   └── screenshots/              # Documentation screenshots
+├── requirements.txt              # Python dependencies
+├── LICENSE                       # MIT License
+└── README.md                     # This file
 ```
 
 ## 🎯 Model Details
 
-| Model | Speed | Accuracy | Size |
-|-------|-------|----------|------|
-| YOLOv3-face | Fast | Good | ~237 MB |
-| YOLOv4-tiny-face | Very Fast | Moderate | ~23 MB |
-| YOLOv5s-face | Fast | Good | ~14 MB |
-| YOLOv8n-face | Very Fast | Excellent | ~6 MB |
+| Model | Backend | Speed | Accuracy | Size | Dependencies |
+|-------|---------|-------|----------|------|--------------|
+| YOLOv8n-face | Ultralytics | Very Fast | Excellent | ~6 MB | PyTorch |
+| YOLOv8s-face | Ultralytics | Fast | Excellent | ~22 MB | PyTorch |
+| YOLOv8m-face | Ultralytics | Moderate | Excellent | ~52 MB | PyTorch |
+| OpenCV DNN (Res10 SSD) | OpenCV | Very Fast | Good | ~10 MB | None |
 
 ## 📊 Sample Outputs
 
-### Webcam Real-time Detection
+### Webcam Real-time Detection (YOLOv8)
 ![Webcam Detection](outputs/screenshots/webcam_detection.png)
 *Real-time face detection from webcam feed with bounding boxes and confidence scores*
 
@@ -143,42 +155,59 @@ Face_Detection-opencv-yolo/
 
 ## ⚙️ Configuration
 
-Adjust detection parameters in `config.py`:
+### YOLOv8 Configuration
+
+Adjust detection parameters in `src/detect_faces.py`:
 
 ```python
-CONFIDENCE_THRESHOLD = 0.5    # Minimum confidence for detection
-NMS_THRESHOLD = 0.4           # Non-maximum suppression threshold
-INPUT_WIDTH = 416             # Model input width
-INPUT_HEIGHT = 416            # Model input height
+CONFIDENCE_THRESHOLD = 0.5    # Minimum confidence for detection (0.0-1.0)
+IOU_THRESHOLD = 0.4           # Non-maximum suppression threshold
+MODEL_PATH = "yolov8n-face.pt" # Model variant
+```
+
+### OpenCV DNN Configuration
+
+Adjust in `src/detect_faces_opencv.py`:
+
+```python
+CONFIDENCE_THRESHOLD = 0.7    # Minimum confidence for detection (0.0-1.0)
+```
+
+### Change Model Variant
+
+```bash
+# Use different YOLOv8 model
+python src/detect_faces.py --mode webcam --model yolov8s-face.pt
+
+# Available: yolov8n-face.pt, yolov8s-face.pt, yolov8m-face.pt, yolov8l-face.pt, yolov8x-face.pt
 ```
 
 ## 🔧 Customization
 
-### Change Model
-```python
-# YOLOv3
-net = cv2.dnn.readNet("models/yolov3-face.weights", "models/yolov3-face.cfg")
-
-# YOLOv8
-model = YOLO("models/yolov8n-face.pt")
-```
-
 ### Adjust Confidence Threshold
-```python
+
+```bash
 # Higher = fewer false positives, might miss faces
 # Lower = more detections, might include false positives
-CONFIDENCE_THRESHOLD = 0.6
+python src/detect_faces.py --mode webcam --conf 0.6
 ```
 
-## 📈 Performance
+### Save Webcam Output
 
-| Resolution | FPS (CPU) | FPS (GPU) |
-|------------|-----------|-----------|
-| 640x480    | ~30       | ~60+      |
-| 1280x720   | ~15       | ~45+      |
-| 1920x1080  | ~8        | ~30+      |
+```bash
+# Record webcam detection to video file
+python src/detect_faces.py --mode webcam --output outputs/processed_videos/webcam_session.mp4
+```
 
-*Performance varies based on hardware and model used*
+## 📈 Performance Benchmarks
+
+| Resolution | YOLOv8n (CPU) | YOLOv8n (GPU) | OpenCV DNN (CPU) |
+|------------|---------------|---------------|------------------|
+| 640x480    | ~30 FPS       | ~60+ FPS      | ~45 FPS          |
+| 1280x720   | ~15 FPS       | ~45+ FPS      | ~25 FPS          |
+| 1920x1080  | ~8 FPS        | ~30+ FPS      | ~15 FPS          |
+
+*Performance varies based on hardware. GPU requires CUDA-enabled PyTorch.*
 
 ## 🤝 Contributing
 
@@ -195,9 +224,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - [YOLO](https://pjreddie.com/darknet/yolo/) - Original YOLO implementation
-- [OpenCV](https://opencv.org/) - Computer vision library
 - [Ultralytics](https://github.com/ultralytics/ultralytics) - YOLOv5/v8 implementation
+- [OpenCV](https://opencv.org/) - Computer vision library
 - Pre-trained face detection models from various sources
+- [derronqi/yolov8-face](https://github.com/derronqi/yolov8-face) - YOLOv8 face models
 
 ## 📧 Contact
 
